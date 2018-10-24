@@ -1,4 +1,4 @@
-import { ADD_TODO } from '../Actions';
+import { ADD_TODO, COMPLETED_TODO } from '../Actions';
 
 const initialState = [{
     task: "play guitar",
@@ -6,14 +6,23 @@ const initialState = [{
     id: Date.now()
 }];
 
-export default todoReducer = (state = initialState, action) => {
+const todoReducer = (state = initialState, action) => {
     switch(action.type) {
         case ADD_TODO:
             return state.concat(action.payload);
+        case COMPLETED_TODO:
+            return state.map(todo => {
+                if (todo.id === action.payload) {
+                    return Object.assign({}, todo, { completed: !todo.completed });
+                } else {
+                    return todo;
+                }
+            });
         default:
             return state;
     }
 };
+export default todoReducer;
 
 //set state to initial state.
 //use switch conditional
@@ -24,3 +33,7 @@ export default todoReducer = (state = initialState, action) => {
 
 //dont have to object.assign this state bc it is immutable bc concat returns a new array.
 //would have to object.assign an object literal but initial state is already array.  or if want to update the object or toggle todo flag.
+
+//complete todo.
+//map for each todo if our todo.id is the same as action.payload then 
+//immutable so object.assign. pass in all props of todo.  
